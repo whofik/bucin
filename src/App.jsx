@@ -83,16 +83,16 @@ const App = () => {
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="relative w-full h-screen"
+          className="relative w-full h-screen perspective-1000"
         >
           <BackgroundParticles mousePos={mousePos} />
           <HangingRope />
-          
-          <h1 className="absolute top-6 left-1/2 -translate-x-1/2 text-pink-500 font-cursive text-3xl md:text-5xl z-50 drop-shadow-md select-none tracking-tighter">
+
+          <h1 className="absolute top-10 md:top-6 left-0 right-0 text-center text-pink-500 font-cursive text-3xl md:text-5xl z-50 drop-shadow-md select-none tracking-tighter px-4">
             Our Pink Memories
           </h1>
 
-          <div className="relative w-full h-full flex items-center justify-center">
+          <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
             {PHOTOS.map((photo, index) => (
               <PolaroidCard 
                 key={photo.id} 
