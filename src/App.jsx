@@ -7,11 +7,11 @@ import AudioVisualizer from './components/AudioVisualizer'
 import HangingRope from './components/HangingRope'
 
 const PHOTOS = [
-  { id: 1, src: 'https://njy.my.id/files/vfez.jpg', caption: 'Memories...', initialPos: { x: '5vw', y: 20, rotate: -8 } },
-  { id: 2, src: 'https://njy.my.id/files/mcwy.jpg', caption: 'Sweet Moments', initialPos: { x: '25vw', y: 40, rotate: -4 } },
-  { id: 3, src: '/assets/p3.jpg', caption: 'Joy', initialPos: { x: '45vw', y: 50, rotate: 0 } },
-  { id: 4, src: '/assets/p4.jpg', caption: 'Love', initialPos: { x: '65vw', y: 40, rotate: 4 } },
-  { id: 5, src: '/assets/p5.jpg', caption: 'Forever', initialPos: { x: '85vw', y: 20, rotate: 8 } },
+  { id: 1, src: 'https://njy.my.id/files/vfez.jpg', caption: 'Memories...', initialPos: { x: '8vw', y: 15, rotate: -12 } },
+  { id: 2, src: 'https://njy.my.id/files/mcwy.jpg', caption: 'Sweet Moments', initialPos: { x: '28vw', y: 35, rotate: -5 } },
+  { id: 3, src: 'https://njy.my.id/files/ned.jpg', caption: 'Eternal Joy', initialPos: { x: '48vw', y: 45, rotate: 2 } },
+  { id: 4, src: '/assets/p4.jpg', caption: 'Love', initialPos: { x: '68vw', y: 35, rotate: 6 } },
+  { id: 5, src: '/assets/p5.jpg', caption: 'Forever', initialPos: { x: '88vw', y: 15, rotate: 14 } },
 ]
 
 const App = () => {
