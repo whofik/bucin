@@ -1,9 +1,29 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import WelcomeOverlay from './components/WelcomeOverlay'
+import PolaroidCard from './components/PolaroidCard'
+
+const PHOTOS = [
+  { id: 1, src: '/assets/p1.jpg', caption: 'Memories...', initialPos: { x: '10vw', y: '20vh', rotate: -15 } },
+  { id: 2, src: '/assets/p2.jpg', caption: 'Sweet Moments', initialPos: { x: '70vw', y: '15vh', rotate: 10 } },
+  { id: 3, src: '/assets/p3.jpg', caption: 'Joy', initialPos: { x: '15vw', y: '60vh', rotate: 5 } },
+  { id: 4, src: '/assets/p4.jpg', caption: 'Love', initialPos: { x: '75vw', y: '65vh', rotate: -10 } },
+  { id: 5, src: '/assets/p5.jpg', caption: 'Forever', initialPos: { x: '45vw', y: '70vh', rotate: 2 } },
+]
 
 const App = () => {
   const [started, setStarted] = useState(false)
+  const [activeIndex, setActiveIndex] = useState(0)
   const audioRef = useRef(null)
+
+  useEffect(() => {
+    if (!started) return
+    
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % PHOTOS.length)
+    }, 5000) // Change photo every 5 seconds
+
+    return () => clearInterval(interval)
+  }, [started])
 
   const handleStart = () => {
     setStarted(true)
@@ -19,9 +39,17 @@ const App = () => {
       
       {started && (
         <div className="relative w-full h-screen">
-           <h1 className="absolute top-10 left-1/2 -translate-x-1/2 text-pink-500 font-bold text-2xl z-50">
+          <h1 className="absolute top-10 left-1/2 -translate-x-1/2 text-pink-500 font-bold text-2xl z-50">
             Pink Album
           </h1>
+          
+          {PHOTOS.map((photo, index) => (
+            <PolaroidCard
+              key={photo.id}
+              {...photo}
+              isActive={index === activeIndex}
+            />
+          ))}
         </div>
       )}
     </div>
