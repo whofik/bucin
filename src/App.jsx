@@ -7,11 +7,11 @@ import AudioVisualizer from './components/AudioVisualizer'
 import HangingRope from './components/HangingRope'
 
 const PHOTOS = [
-  { id: 1, src: 'https://njy.my.id/files/vfez.jpg', caption: 'Memories...', initialPos: { x: '5vw', y: '25px', rotate: -8 } },
-  { id: 2, src: '/assets/p2.jpg', caption: 'Sweet Moments', initialPos: { x: '25vw', y: '45px', rotate: -4 } },
-  { id: 3, src: '/assets/p3.jpg', caption: 'Joy', initialPos: { x: '45vw', y: '55px', rotate: 0 } },
-  { id: 4, src: '/assets/p4.jpg', caption: 'Love', initialPos: { x: '65vw', y: '45px', rotate: 4 } },
-  { id: 5, src: '/assets/p5.jpg', caption: 'Forever', initialPos: { x: '85vw', y: '25px', rotate: 8 } },
+  { id: 1, src: 'https://njy.my.id/files/vfez.jpg', caption: 'Memories...', initialPos: { x: '5vw', y: 25, rotate: -8 } },
+  { id: 2, src: '/assets/p2.jpg', caption: 'Sweet Moments', initialPos: { x: '25vw', y: 45, rotate: -4 } },
+  { id: 3, src: '/assets/p3.jpg', caption: 'Joy', initialPos: { x: '45vw', y: 55, rotate: 0 } },
+  { id: 4, src: '/assets/p4.jpg', caption: 'Love', initialPos: { x: '65vw', y: 45, rotate: 4 } },
+  { id: 5, src: '/assets/p5.jpg', caption: 'Forever', initialPos: { x: '85vw', y: 25, rotate: 8 } },
 ]
 
 const App = () => {
@@ -21,32 +21,25 @@ const App = () => {
   const audioRef = useRef(null)
 
   useEffect(() => {
-    let interval;
-    if (started) {
-      const intervalTime = (duration / PHOTOS.length) * 1000
-      interval = setInterval(() => {
-        setActiveIndex((prev) => (prev + 1) % PHOTOS.length)
-      }, intervalTime)
-    }
+    if (!started) return
+    const intervalTime = (duration / PHOTOS.length) * 1000
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % PHOTOS.length)
+    }, intervalTime)
     return () => clearInterval(interval)
   }, [started, duration])
 
   const handleStart = () => {
-    console.log("Album started")
     setStarted(true)
-    if (audioRef.current) {
-      const playPromise = audioRef.current.play()
-      if (playPromise !== undefined) {
-        playPromise.catch(error => {
-          console.error("Playback failed:", error)
-        })
+    setTimeout(() => {
+      if (audioRef.current) {
+        audioRef.current.play().catch(e => console.log("Auto-play blocked:", e))
       }
-    }
+    }, 100)
   }
 
   const handleMetadata = () => {
     if (audioRef.current && audioRef.current.duration) {
-      console.log("Audio duration:", audioRef.current.duration)
       setDuration(audioRef.current.duration)
     }
   }
@@ -61,16 +54,14 @@ const App = () => {
         preload="auto"
         loop 
         onLoadedMetadata={handleMetadata}
-        onError={(e) => console.error("Audio error:", e)}
       />
       
-      <WelcomeOverlay onStart={handleStart} isVisible={!started} />
-      
-      {started && (
+      {!started ? (
+        <WelcomeOverlay onStart={handleStart} isVisible={true} />
+      ) : (
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
           className="relative w-full h-screen"
         >
           <BackgroundParticles />
