@@ -15,17 +15,19 @@ const PHOTOS = [
 const App = () => {
   const [started, setStarted] = useState(false)
   const [activeIndex, setActiveIndex] = useState(0)
+  const [duration, setDuration] = useState(0)
   const audioRef = useRef(null)
 
   useEffect(() => {
-    if (!started) return
-    
+    if (!started || duration === 0) return
+
+    const intervalTime = (duration / PHOTOS.length) * 1000
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % PHOTOS.length)
-    }, 5000)
+    }, intervalTime)
 
     return () => clearInterval(interval)
-  }, [started])
+  }, [started, duration])
 
   const handleStart = () => {
     setStarted(true)
@@ -34,9 +36,18 @@ const App = () => {
     }
   }
 
+  const handleMetadata = (e) => {
+    setDuration(e.target.duration)
+  }
+
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-pink-100 to-pink-200 overflow-hidden relative">
-      <audio ref={audioRef} src="/assets/music.mp3" loop />
+      <audio 
+        ref={audioRef} 
+        src="https://d.uguu.se/CwMxBqsG.mpeg" 
+        loop 
+        onLoadedMetadata={handleMetadata}
+      />
       {!started && <WelcomeOverlay onStart={handleStart} />}
       
       {started && (
