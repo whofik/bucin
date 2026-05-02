@@ -17,68 +17,69 @@ const PHOTOS = [
 const App = () => {
   const [started, setStarted] = useState(false)
   const [activeIndex, setActiveIndex] = useState(0)
-  const [duration, setDuration] = useState(15) // Fallback duration 15s
+  const [duration, setDuration] = useState(15)
   const audioRef = useRef(null)
 
   useEffect(() => {
-    if (!started) return
-
-    const intervalTime = (duration / PHOTOS.length) * 1000
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % PHOTOS.length)
-    }, intervalTime)
-
+    let interval;
+    if (started) {
+      const intervalTime = (duration / PHOTOS.length) * 1000
+      interval = setInterval(() => {
+        setActiveIndex((prev) => (prev + 1) % PHOTOS.length)
+      }, intervalTime)
+    }
     return () => clearInterval(interval)
   }, [started, duration])
 
   const handleStart = () => {
+    console.log("Album started")
     setStarted(true)
     if (audioRef.current) {
-      audioRef.current.play().catch(err => console.error("Audio play failed:", err))
+      const playPromise = audioRef.current.play()
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          console.error("Playback failed:", error)
+        })
+      }
     }
   }
 
-  const handleMetadata = (e) => {
-    if (e.target.duration && e.target.duration > 0) {
-      setDuration(e.target.duration)
+  const handleMetadata = () => {
+    if (audioRef.current && audioRef.current.duration) {
+      console.log("Audio duration:", audioRef.current.duration)
+      setDuration(audioRef.current.duration)
     }
   }
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-pink-100 to-pink-200 overflow-hidden relative">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(252,228,236,0.4)_100%)] pointer-events-none z-40" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(252,228,236,0.3)_100%)] pointer-events-none z-40" />
+      
       <audio 
         ref={audioRef} 
         src="https://d.uguu.se/CwMxBqsG.mpeg" 
+        preload="auto"
         loop 
         onLoadedMetadata={handleMetadata}
-        onCanPlayThrough={handleMetadata}
       />
+      
       <WelcomeOverlay onStart={handleStart} isVisible={!started} />
       
       {started && (
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 2, delay: 0.5 }}
+          transition={{ duration: 1 }}
           className="relative w-full h-screen"
         >
           <BackgroundParticles />
-          
+          <HangingRope />
           <h1 className="absolute top-8 left-1/2 -translate-x-1/2 text-pink-500 font-cursive text-4xl z-50 drop-shadow-sm">
             Pink Album
           </h1>
-
-          <HangingRope />
-          
           {PHOTOS.map((photo, index) => (
-            <PolaroidCard
-              key={photo.id}
-              {...photo}
-              isActive={index === activeIndex}
-            />
+            <PolaroidCard key={photo.id} {...photo} isActive={index === activeIndex} />
           ))}
-          
           <AudioVisualizer />
         </motion.div>
       )}
