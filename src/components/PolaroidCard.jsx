@@ -8,36 +8,55 @@ const PolaroidCard = ({ src, caption, isActive, initialPos }) => {
         x: initialPos.x, 
         y: initialPos.y, 
         rotate: initialPos.rotate,
-        scale: 0.8,
         opacity: 0 
       }}
       animate={isActive ? {
-        x: 'calc(50vw - 125px)', // Centered (250px width / 2)
-        y: 'calc(50vh - 175px)', // Centered (350px height / 2 approx)
+        x: 'calc(50vw - 125px)',
+        y: 'calc(50vh - 175px)',
         rotate: 0,
-        scale: 1.2,
+        scale: 1.1,
         opacity: 1,
+        filter: 'blur(0px)',
         zIndex: 50
       } : {
         x: initialPos.x,
         y: initialPos.y,
-        rotate: initialPos.rotate,
+        // Organic Swaying Logic
+        rotate: [initialPos.rotate - 2, initialPos.rotate + 2],
+        y: [initialPos.y, initialPos.y + 5, initialPos.y],
         scale: 0.8,
-        opacity: 0.6,
+        opacity: 0.5,
+        filter: 'blur(1px)',
         zIndex: 10
       }}
-      transition={{ 
-        type: 'spring', 
-        stiffness: 100, 
-        damping: 20,
-        duration: 0.8 
+      transition={isActive ? {
+        type: 'spring',
+        stiffness: 80,
+        damping: 15
+      } : {
+        rotate: {
+          repeat: Infinity,
+          repeatType: "reverse",
+          duration: 3 + Math.random() * 2,
+          ease: "easeInOut"
+        },
+        y: {
+          repeat: Infinity,
+          repeatType: "loop",
+          duration: 4 + Math.random() * 2,
+          ease: "easeInOut"
+        },
+        duration: 0.8
       }}
-      className="absolute w-[250px] p-3 pb-10 bg-white polaroid-shadow border border-pink-50 rounded-sm"
+      className="absolute w-[220px] p-2 pb-8 bg-white polaroid-shadow border border-pink-50 origin-top"
     >
-      <div className="w-full h-[250px] overflow-hidden bg-pink-50">
+      {/* Clip/Hook visual */}
+      <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-4 h-6 bg-pink-300 rounded-t-full opacity-60 z-20" />
+      
+      <div className="w-full h-[220px] overflow-hidden bg-pink-50">
         <img src={src} alt={caption} className="w-full h-full object-cover" />
       </div>
-      <p className="mt-4 text-center font-serif text-pink-400 italic text-sm">
+      <p className="mt-3 text-center font-serif text-pink-400 italic text-xs">
         {caption}
       </p>
     </motion.div>
