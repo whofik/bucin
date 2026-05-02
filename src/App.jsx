@@ -57,10 +57,11 @@ const App = () => {
       
       <audio 
         ref={audioRef} 
-        src="https://d.uguu.se/CwMxBqsG.mpeg" 
+        src="/assets/music.mp3" 
         preload="auto"
         loop 
         onLoadedMetadata={handleMetadata}
+        onError={(e) => console.error("Audio error:", e)}
       />
       
       <WelcomeOverlay onStart={handleStart} isVisible={!started} />
