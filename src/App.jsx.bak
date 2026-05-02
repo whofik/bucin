@@ -88,16 +88,11 @@ const App = () => {
           <BackgroundParticles mousePos={mousePos} />
           <HangingRope />
 
-          <div className="absolute top-8 md:top-6 left-0 right-0 flex flex-col items-center z-50 select-none">
-            <h1 className="text-pink-500 font-cursive text-3xl md:text-6xl drop-shadow-md tracking-tighter px-4">
-              Album Kesayanganku
-            </h1>
-            <p className="text-pink-400 font-serif italic text-lg md:text-2xl mt-[-5px] md:-mt-2 opacity-80">
-              Shafira
-            </p>
-          </div>
+          <h1 className="absolute top-10 md:top-6 left-0 right-0 text-center text-pink-500 font-cursive text-3xl md:text-5xl z-50 drop-shadow-md select-none tracking-tighter px-4">
+            Our Pink Memories
+          </h1>
 
-          <div className="relative w-full h-full flex items-center justify-center overflow-hidden pt-20 md:pt-32">
+          <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
             {PHOTOS.map((photo, index) => (
               <PolaroidCard 
                 key={photo.id} 
