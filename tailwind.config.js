@@ -6,6 +6,10 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        serif: ['"Playfair Display"', 'serif'],
+        cursive: ['"Dancing Script"', 'cursive'],
+      },
       colors: {
         pink: {
           50: '#fdf2f8',

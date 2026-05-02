@@ -50,15 +50,17 @@ const PolaroidCard = ({ src, caption, isActive, initialPos }) => {
         },
         duration: 0.8
       }}
-      className="absolute w-[220px] p-2 pb-8 bg-white polaroid-shadow border border-pink-50 origin-top"
+      className="absolute w-[240px] p-3 pb-12 bg-white polaroid-shadow border border-pink-50 origin-top rounded-[2px]"
     >
       {/* Clip/Hook visual */}
-      <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-4 h-6 bg-pink-300 rounded-t-full opacity-60 z-20" />
+      <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-5 h-8 bg-gradient-to-b from-pink-200 to-pink-400 rounded-t-full shadow-inner opacity-80 z-20" />
       
-      <div className="w-full h-[220px] overflow-hidden bg-pink-50">
+      <div className="w-full h-[240px] overflow-hidden bg-pink-50 relative">
         <img src={src} alt={caption} className="w-full h-full object-cover" />
+        {/* Subtle overlay for realism */}
+        <div className="absolute inset-0 bg-gradient-to-tr from-black/5 to-transparent pointer-events-none" />
       </div>
-      <p className="mt-3 text-center font-serif text-pink-400 italic text-xs">
+      <p className="mt-4 text-center font-serif text-pink-500 italic text-sm tracking-wide">
         {caption}
       </p>
     </motion.div>
