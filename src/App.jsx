@@ -6,11 +6,11 @@ import AudioVisualizer from './components/AudioVisualizer'
 import HangingRope from './components/HangingRope'
 
 const PHOTOS = [
-  { id: 1, src: '/assets/p1.jpg', caption: 'Memories...', initialPos: { x: '10vw', y: '20vh', rotate: -15 } },
-  { id: 2, src: '/assets/p2.jpg', caption: 'Sweet Moments', initialPos: { x: '70vw', y: '15vh', rotate: 10 } },
-  { id: 3, src: '/assets/p3.jpg', caption: 'Joy', initialPos: { x: '15vw', y: '60vh', rotate: 5 } },
-  { id: 4, src: '/assets/p4.jpg', caption: 'Love', initialPos: { x: '75vw', y: '65vh', rotate: -10 } },
-  { id: 5, src: '/assets/p5.jpg', caption: 'Forever', initialPos: { x: '45vw', y: '70vh', rotate: 2 } },
+  { id: 1, src: '/assets/p1.jpg', caption: 'Memories...', initialPos: { x: '5vw', y: '25px', rotate: -8 } },
+  { id: 2, src: '/assets/p2.jpg', caption: 'Sweet Moments', initialPos: { x: '25vw', y: '45px', rotate: -4 } },
+  { id: 3, src: '/assets/p3.jpg', caption: 'Joy', initialPos: { x: '45vw', y: '55px', rotate: 0 } },
+  { id: 4, src: '/assets/p4.jpg', caption: 'Love', initialPos: { x: '65vw', y: '45px', rotate: 4 } },
+  { id: 5, src: '/assets/p5.jpg', caption: 'Forever', initialPos: { x: '85vw', y: '25px', rotate: 8 } },
 ]
 
 const App = () => {
