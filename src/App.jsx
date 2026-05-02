@@ -3,6 +3,7 @@ import WelcomeOverlay from './components/WelcomeOverlay'
 import PolaroidCard from './components/PolaroidCard'
 import BackgroundParticles from './components/BackgroundParticles'
 import AudioVisualizer from './components/AudioVisualizer'
+import HangingRope from './components/HangingRope'
 
 const PHOTOS = [
   { id: 1, src: '/assets/p1.jpg', caption: 'Memories...', initialPos: { x: '10vw', y: '20vh', rotate: -15 } },
@@ -57,6 +58,8 @@ const App = () => {
           <h1 className="absolute top-10 left-1/2 -translate-x-1/2 text-pink-500 font-bold text-2xl z-50">
             Pink Album
           </h1>
+
+          <HangingRope />
           
           {PHOTOS.map((photo, index) => (
             <PolaroidCard
