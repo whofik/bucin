@@ -7,11 +7,11 @@ import AudioVisualizer from './components/AudioVisualizer'
 import HangingRope from './components/HangingRope'
 
 const PHOTOS = [
-  { id: 1, src: 'https://njy.my.id/files/vfez.jpg', caption: 'Memories...', initialPos: { x: '8vw', y: 15, rotate: -12 } },
-  { id: 2, src: 'https://njy.my.id/files/mcwy.jpg', caption: 'Sweet Moments', initialPos: { x: '28vw', y: 35, rotate: -5 } },
-  { id: 3, src: 'https://njy.my.id/files/ned.jpg', caption: 'Eternal Joy', initialPos: { x: '48vw', y: 45, rotate: 2 } },
-  { id: 4, src: '/assets/p4.jpg', caption: 'Love', initialPos: { x: '68vw', y: 35, rotate: 6 } },
-  { id: 5, src: '/assets/p5.jpg', caption: 'Forever', initialPos: { x: '88vw', y: 15, rotate: 14 } },
+  { id: 1, src: 'https://njy.my.id/files/vfez.jpg', caption: 'Your Beautiful Smile', initialPos: { x: '10vw', y: 15, rotate: -10 } },
+  { id: 2, src: 'https://njy.my.id/files/mcwy.jpg', caption: 'Sweetest Moments', initialPos: { x: '30vw', y: 35, rotate: -5 } },
+  { id: 3, src: 'https://njy.my.id/files/ned.jpg', caption: 'Eternal Happiness', initialPos: { x: '50vw', y: 45, rotate: 2 } },
+  { id: 4, src: 'https://njy.my.id/files/qdn.jpg', caption: 'The Way You Look', initialPos: { x: '70vw', y: 35, rotate: 8 } },
+  { id: 5, src: '/assets/p5.jpg', caption: 'Forever & Always', initialPos: { x: '90vw', y: 15, rotate: 12 } },
 ]
 
 const App = () => {
@@ -19,7 +19,19 @@ const App = () => {
   const [activeIndex, setActiveIndex] = useState(0)
   const [duration, setDuration] = useState(15)
   const [isMobile, setIsMobile] = useState(false)
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const audioRef = useRef(null)
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePos({
+        x: (e.clientX / window.innerWidth - 0.5) * 40,
+        y: (e.clientY / window.innerHeight - 0.5) * 40
+      })
+    }
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768)
@@ -51,9 +63,12 @@ const App = () => {
   }
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-b from-pink-100 to-pink-200 overflow-hidden relative">
-      {/* Dynamic Ambient Light */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.4)_0%,_transparent_70%)] pointer-events-none z-0" />
+    <div className="min-h-screen w-full bg-gradient-to-br from-pink-50 via-pink-100 to-pink-200 overflow-hidden relative">
+      {/* Dynamic Ambient Light following mouse */}
+      <motion.div 
+        animate={{ x: mousePos.x * 2, y: mousePos.y * 2 }}
+        className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.5)_0%,_transparent_70%)] pointer-events-none z-0" 
+      />
       
       <audio 
         ref={audioRef} 
@@ -71,20 +86,21 @@ const App = () => {
           animate={{ opacity: 1 }}
           className="relative w-full h-screen"
         >
-          <BackgroundParticles />
+          <BackgroundParticles mousePos={mousePos} />
           <HangingRope />
           
-          <h1 className="absolute top-6 left-1/2 -translate-x-1/2 text-pink-500 font-cursive text-3xl md:text-5xl z-50 drop-shadow-md select-none">
-            Pink Album
+          <h1 className="absolute top-6 left-1/2 -translate-x-1/2 text-pink-500 font-cursive text-3xl md:text-5xl z-50 drop-shadow-md select-none tracking-tighter">
+            Our Pink Memories
           </h1>
 
-          <div className="relative w-full h-full">
+          <div className="relative w-full h-full flex items-center justify-center">
             {PHOTOS.map((photo, index) => (
               <PolaroidCard 
                 key={photo.id} 
                 {...photo} 
                 isActive={index === activeIndex}
                 isMobile={isMobile}
+                mousePos={mousePos}
               />
             ))}
           </div>
