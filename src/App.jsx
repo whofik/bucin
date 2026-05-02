@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import WelcomeOverlay from './components/WelcomeOverlay'
 import PolaroidCard from './components/PolaroidCard'
+import BackgroundParticles from './components/BackgroundParticles'
+import AudioVisualizer from './components/AudioVisualizer'
 
 const PHOTOS = [
   { id: 1, src: '/assets/p1.jpg', caption: 'Memories...', initialPos: { x: '10vw', y: '20vh', rotate: -15 } },
@@ -20,7 +22,7 @@ const App = () => {
     
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % PHOTOS.length)
-    }, 5000) // Change photo every 5 seconds
+    }, 5000)
 
     return () => clearInterval(interval)
   }, [started])
@@ -39,6 +41,8 @@ const App = () => {
       
       {started && (
         <div className="relative w-full h-screen">
+          <BackgroundParticles />
+          
           <h1 className="absolute top-10 left-1/2 -translate-x-1/2 text-pink-500 font-bold text-2xl z-50">
             Pink Album
           </h1>
@@ -50,6 +54,8 @@ const App = () => {
               isActive={index === activeIndex}
             />
           ))}
+          
+          <AudioVisualizer />
         </div>
       )}
     </div>
