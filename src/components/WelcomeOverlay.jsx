@@ -17,7 +17,6 @@ const WelcomeOverlay = ({ onStart }) => {
             Buka Album
           </p>
         </button>
-        <p className="text-pink-300 text-sm italic font-serif">Versi Stabil - Ketuk Hati</p>
       </div>
     </div>
   )

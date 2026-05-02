@@ -7,18 +7,26 @@ import AudioVisualizer from './components/AudioVisualizer'
 import HangingRope from './components/HangingRope'
 
 const PHOTOS = [
-  { id: 1, src: 'https://njy.my.id/files/vfez.jpg', caption: 'Memories...', initialPos: { x: '5vw', y: 25, rotate: -8 } },
-  { id: 2, src: '/assets/p2.jpg', caption: 'Sweet Moments', initialPos: { x: '25vw', y: 45, rotate: -4 } },
-  { id: 3, src: '/assets/p3.jpg', caption: 'Joy', initialPos: { x: '45vw', y: 55, rotate: 0 } },
-  { id: 4, src: '/assets/p4.jpg', caption: 'Love', initialPos: { x: '65vw', y: 45, rotate: 4 } },
-  { id: 5, src: '/assets/p5.jpg', caption: 'Forever', initialPos: { x: '85vw', y: 25, rotate: 8 } },
+  { id: 1, src: 'https://njy.my.id/files/vfez.jpg', caption: 'Memories...', initialPos: { x: '5vw', y: 20, rotate: -8 } },
+  { id: 2, src: 'https://njy.my.id/files/mcwy.jpg', caption: 'Sweet Moments', initialPos: { x: '25vw', y: 40, rotate: -4 } },
+  { id: 3, src: '/assets/p3.jpg', caption: 'Joy', initialPos: { x: '45vw', y: 50, rotate: 0 } },
+  { id: 4, src: '/assets/p4.jpg', caption: 'Love', initialPos: { x: '65vw', y: 40, rotate: 4 } },
+  { id: 5, src: '/assets/p5.jpg', caption: 'Forever', initialPos: { x: '85vw', y: 20, rotate: 8 } },
 ]
 
 const App = () => {
   const [started, setStarted] = useState(false)
   const [activeIndex, setActiveIndex] = useState(0)
   const [duration, setDuration] = useState(15)
+  const [isMobile, setIsMobile] = useState(false)
   const audioRef = useRef(null)
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   useEffect(() => {
     if (!started) return
@@ -31,11 +39,9 @@ const App = () => {
 
   const handleStart = () => {
     setStarted(true)
-    setTimeout(() => {
-      if (audioRef.current) {
-        audioRef.current.play().catch(e => console.log("Auto-play blocked:", e))
-      }
-    }, 100)
+    if (audioRef.current) {
+      audioRef.current.play().catch(() => {})
+    }
   }
 
   const handleMetadata = () => {
@@ -46,7 +52,8 @@ const App = () => {
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-pink-100 to-pink-200 overflow-hidden relative">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(252,228,236,0.3)_100%)] pointer-events-none z-40" />
+      {/* Dynamic Ambient Light */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.4)_0%,_transparent_70%)] pointer-events-none z-0" />
       
       <audio 
         ref={audioRef} 
@@ -57,7 +64,7 @@ const App = () => {
       />
       
       {!started ? (
-        <WelcomeOverlay onStart={handleStart} isVisible={true} />
+        <WelcomeOverlay onStart={handleStart} />
       ) : (
         <motion.div 
           initial={{ opacity: 0 }}
@@ -66,12 +73,22 @@ const App = () => {
         >
           <BackgroundParticles />
           <HangingRope />
-          <h1 className="absolute top-8 left-1/2 -translate-x-1/2 text-pink-500 font-cursive text-4xl z-50 drop-shadow-sm">
+          
+          <h1 className="absolute top-6 left-1/2 -translate-x-1/2 text-pink-500 font-cursive text-3xl md:text-5xl z-50 drop-shadow-md select-none">
             Pink Album
           </h1>
-          {PHOTOS.map((photo, index) => (
-            <PolaroidCard key={photo.id} {...photo} isActive={index === activeIndex} />
-          ))}
+
+          <div className="relative w-full h-full">
+            {PHOTOS.map((photo, index) => (
+              <PolaroidCard 
+                key={photo.id} 
+                {...photo} 
+                isActive={index === activeIndex}
+                isMobile={isMobile}
+              />
+            ))}
+          </div>
+          
           <AudioVisualizer />
         </motion.div>
       )}
