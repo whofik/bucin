@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { motion } from 'framer-motion'
 
 const PolaroidCard = ({ src, caption, isActive, initialPos }) => {
+  const rotateDuration = useMemo(() => 3 + Math.random() * 2, []);
+  const yDuration = useMemo(() => 4 + Math.random() * 2, []);
+
   return (
     <motion.div
       initial={{ 
@@ -20,10 +23,9 @@ const PolaroidCard = ({ src, caption, isActive, initialPos }) => {
         zIndex: 50
       } : {
         x: initialPos.x,
-        y: initialPos.y,
         // Organic Swaying Logic
         rotate: [initialPos.rotate - 2, initialPos.rotate + 2],
-        y: [initialPos.y, initialPos.y + 5, initialPos.y],
+        y: [initialPos.y, `calc(${initialPos.y} + 5px)`, initialPos.y],
         scale: 0.8,
         opacity: 0.5,
         filter: 'blur(1px)',
@@ -37,13 +39,13 @@ const PolaroidCard = ({ src, caption, isActive, initialPos }) => {
         rotate: {
           repeat: Infinity,
           repeatType: "reverse",
-          duration: 3 + Math.random() * 2,
+          duration: rotateDuration,
           ease: "easeInOut"
         },
         y: {
           repeat: Infinity,
           repeatType: "loop",
-          duration: 4 + Math.random() * 2,
+          duration: yDuration,
           ease: "easeInOut"
         },
         duration: 0.8
