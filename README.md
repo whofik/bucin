@@ -28,4 +28,4 @@ Sebuah album digital interaktif dengan efek 3D dan animasi sinematik, dibuat khu
    ```
 
 ---
-*Dibuat dengan penuh rasa oleh Gemini CLI.*
+
